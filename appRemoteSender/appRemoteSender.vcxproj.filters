@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ofxSnappy\libs\snappy\src\snappy-sinksource.cc">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ofxSnappy\libs\snappy\src\snappy-stubs-internal.cc">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ofxSnappy\libs\snappy\src\snappy.cc">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ofxProfiler\src\ofxProfiler\Activity.cpp">
+      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ofxProfiler\src\ofxProfiler\Scope.cpp">
+      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ofxProfiler\src\ofxProfiler.cpp">
+      <Filter>addons\ofxProfiler\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons">
+      <UniqueIdentifier>{55f3071f-4fb9-4802-a9fd-c2148e325457}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSnappy">
+      <UniqueIdentifier>{7319dedb-f37a-4486-a457-3daab60e125b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSnappy\libs">
+      <UniqueIdentifier>{ecee0edd-6082-4dda-9643-d4b2298e5500}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSnappy\libs\snappy">
+      <UniqueIdentifier>{c37ad8d9-fa29-49f6-9ce9-dd6092498b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxSnappy\libs\snappy\src">
+      <UniqueIdentifier>{7e9e3a7d-cd3f-485c-ba58-d5fd955ddbd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxProfiler">
+      <UniqueIdentifier>{70be7938-bb54-43a6-a612-934464f466c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxProfiler\src">
+      <UniqueIdentifier>{e26600c2-d4ef-481a-8ecb-d1c12882edb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxProfiler\src\ofxProfiler">
+      <UniqueIdentifier>{337e3946-9942-4417-85de-0b01d7e5af4d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-internal.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-sinksource.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-stubs-internal.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-stubs-public.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxProfiler\src\ofxProfiler.h">
+      <Filter>addons\ofxProfiler\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxProfiler\src\ofxProfiler\Activity.h">
+      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ofxProfiler\src\ofxProfiler\Scope.h">
+      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\ofxProfiler\Readme.md">
+      <Filter>addons\ofxProfiler</Filter>
+    </None>
+  </ItemGroup>
+</Project>
