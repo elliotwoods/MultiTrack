@@ -64,17 +64,27 @@ public:
 	void append(const ofxKFW2::Source::BaseImage OFXKFW2_BaseImageSimple_TEMPLATE_ARGS_TRIM & source) {
 		this->appendRaw(source.getWidth());
 		this->appendRaw(source.getHeight());
-		this->append((const char *)source.getPixels().getData(), source.getPixels().size() * sizeof(PixelType));
+
+		auto size = source.getPixels().size();
+		auto length = size * sizeof(PixelType);
+
+		this->append((const char *)source.getPixels().getData(), length);
 	}
 
 	template<typename SourceType>
 	void append(shared_ptr<ofxKFW2::Source::Base> untypedSource) {
-		auto source = dynamic_pointer_cast<ofxKFW2::Source::Color>(untypedSource);
+		auto source = dynamic_pointer_cast<SourceType>(untypedSource);
 		if (source) {
-			this->appendRaw(source->getTypeName().size());
-			this->append(source->getTypeName());
+			auto sourceName = source->getTypeName();
+			this->appendRaw(sourceName.size());
+			this->append(sourceName);
 			this->append(*source);
 		}
+	}
+
+	void reset() {
+		this->position = 0;
+		this->_size = 0;
 	}
 protected:
 	char * buffer;
@@ -109,4 +119,13 @@ class ofApp : public ofBaseApp{
 		vector<ofVec2f> colorCoords;
 		int numBodiesTracked;
 		bool bHaveAllStreams;
+
+		Buffer buffer;
+
+		bool colorEnabled = true;
+		bool depthEnabled = true;
+		bool infraredEnabled = true;
+		bool bodyIndexEnabled = true;
+
+		bool compressEnabled = true;
 };

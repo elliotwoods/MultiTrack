@@ -7,23 +7,23 @@
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ofxSnappy\libs\snappy\src\snappy-sinksource.cc">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ofxSnappy\libs\snappy\src\snappy-stubs-internal.cc">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ofxSnappy\libs\snappy\src\snappy.cc">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ofxProfiler\src\ofxProfiler\Activity.cpp">
-      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ofxProfiler\src\ofxProfiler\Scope.cpp">
-      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ofxProfiler\src\ofxProfiler.cpp">
+    <ClCompile Include="..\..\..\addons\ofxProfiler\src\ofxProfiler.cpp">
       <Filter>addons\ofxProfiler\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxProfiler\src\ofxProfiler\Scope.cpp">
+      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxProfiler\src\ofxProfiler\Activity.cpp">
+      <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy.cc">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy-sinksource.cc">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy-stubs-internal.cc">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,37 +59,35 @@
     <ClInclude Include="src\ofApp.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-internal.h">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-sinksource.h">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-stubs-internal.h">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy-stubs-public.h">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ofxSnappy\libs\snappy\src\snappy.h">
-      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ofxProfiler\src\ofxProfiler.h">
+    <ClInclude Include="..\..\..\addons\ofxProfiler\src\ofxProfiler.h">
       <Filter>addons\ofxProfiler\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ofxProfiler\src\ofxProfiler\Activity.h">
+    <ClInclude Include="..\..\..\addons\ofxProfiler\src\ofxProfiler\Scope.h">
       <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ofxProfiler\src\ofxProfiler\Scope.h">
+    <ClInclude Include="..\..\..\addons\ofxProfiler\src\ofxProfiler\Activity.h">
       <Filter>addons\ofxProfiler\src\ofxProfiler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy-internal.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy-sinksource.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy-stubs-internal.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSnappy\libs\snappy\src\snappy-stubs-public.h">
+      <Filter>addons\ofxSnappy\libs\snappy\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\ofxProfiler\Readme.md">
-      <Filter>addons\ofxProfiler</Filter>
-    </None>
+    <None Include="..\..\..\addons\ofxProfiler\Readme.md" />
   </ItemGroup>
 </Project>

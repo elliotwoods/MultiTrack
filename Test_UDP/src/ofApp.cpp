@@ -1,72 +1,59 @@
 #include "ofApp.h"
 
-#include "snappy.h"
-
+//--------------------------------------------------------------
 void ofApp::setup() {
-	kinect.open();
-	kinect.initDepthSource();
-	kinect.initColorSource();
-	kinect.initInfraredSource();
-	kinect.initBodyIndexSource();
-	kinect.initBodySource();
+	this->serverThread = thread([this]() {
+		ofxAsio::UDP::Server server(4444);
+		
+		while (true) {
+			auto dataGram = server.receive();
+			if (dataGram) {
+				this->lockOutput.lock();
+				cout << "[" << ofGetFrameNum() << "] - Server received - ";
+				cout << "\"" << dataGram->getMessage() << "\"";
+				cout << endl;
+				this->lockOutput.unlock();
 
-	ofBackground(40);
+				auto & message = dataGram->getMessage();
+				message = "Returning {" + message + "}";
+				server.send(dataGram);
+			}
+		}
+	});
+
+	this->clientThread= thread([this]() {
+		ofxAsio::UDP::Server client;
+
+		while (true) {
+			{
+				auto sendDataGram = make_shared<ofxAsio::UDP::DataGram>();
+				sendDataGram->setEndPoint(ofxAsio::UDP::EndPoint("127.0.0.1", 4444));
+				sendDataGram->setMessage("Client to server");
+				client.send(sendDataGram);
+			}
+
+			{
+				auto dataGram = client.receive();
+				if (dataGram) {
+					this->lockOutput.lock();
+					cout << "[" << ofGetFrameNum() << "] - Client received - ";
+					cout << "\"" << dataGram->getMessage() << "\"";
+					cout << endl;
+					this->lockOutput.unlock();
+				}
+			}
+		}
+	});
 }
 
 //--------------------------------------------------------------
-void printSize(ostream & os, size_t size) {
-	os << (size / 1e6) << "MB\t";
-	auto fps = (1e9 / 8) / size;
-	os << "[" << fps << "fps]" << endl;
-}
-
 void ofApp::update() {
-	PROFILE_BEGIN("update");
 
-	PROFILE_BEGIN("update kinect");
-	kinect.update();
-	PROFILE_END();
-
-	if (true || kinect.isFrameNew()) {
-		Buffer buffer;
-
-		{
-			PROFILE_SCOPE("allocate");
-			buffer.allocate(50000000);
-		}
-
-		{
-			PROFILE_SCOPE("copy sources");
-			for (auto source : this->kinect.getSources()) {
-				buffer.append<ofxKFW2::Source::Depth>(source);
-				buffer.append<ofxKFW2::Source::Color>(source);
-				buffer.append<ofxKFW2::Source::Infrared>(source);
-				buffer.append<ofxKFW2::Source::BodyIndex>(source);
-			}
-		}
-
-		cout << "Uncompressed : \t";
-		printSize(cout, buffer.size());
-
-		string compressed;
-		PROFILE_BEGIN("compress");
-		snappy::Compress(buffer.begin(), buffer.size(), & compressed);
-		PROFILE_END();
-		cout << "Compressed : \t";
-		printSize(cout, compressed.size());
-
-		cout << endl;
-	}
-
-	PROFILE_END();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	kinect.getColorSource()->draw(0, 0);
-
 	stringstream msg;
-	msg << (this->kinect.isFrameNew() ? "new" : "old") << endl;
 	msg << "fps : " << ofGetFrameRate() << endl;
 	
 	msg << ofxProfiler::getResults();
