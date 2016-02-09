@@ -2,6 +2,8 @@
 
 using namespace ofxCvGui;
 
+const float frameRate = 60;
+
 //--------------------------------------------------------------
 void ofApp::setup(){
 	gui.init();
@@ -19,14 +21,14 @@ void ofApp::setup(){
 
 	this->rebuildGui();
 
-	ofSetFrameRate(30);
+	ofSetFrameRate(frameRate);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 	auto frameIndex = ofGetFrameNum();
 	if (this->client) {
-		int iterations = this->payload.speed * 1e6 / (30 * this->payload.size);
+		int iterations = this->payload.speed * 1e6 / (frameRate * this->payload.size);
 		auto dataGram = make_shared<ofxAsio::UDP::DataGram>();
 		dataGram->setEndPoint(ofxAsio::UDP::EndPoint(this->target.ipAddress, this->target.port));
 
