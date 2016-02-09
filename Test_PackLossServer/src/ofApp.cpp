@@ -9,7 +9,7 @@ void ofApp::setup(){
 	ofSetWindowPosition(256, 256);
 
 	gui.init();
-	this->widgetsPanel = gui.addScroll();
+	this->widgetsPanel = gui.addWidgets();
 	
 	{
 		this->listener.port.set("Port", 4444);
