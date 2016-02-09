@@ -9,7 +9,7 @@ void ofApp::setup(){
 	ofSetWindowPosition(256, 256);
 
 	gui.init();
-	this->widgetsPanel = gui.addScroll();
+	this->widgetsPanel = gui.addWidgets();
 	
 	{
 		this->listener.port.set("Port", 4444);
@@ -33,11 +33,21 @@ void ofApp::setup(){
 						auto dataGram = this->server->receive(2e5);
 						if (dataGram) {
 							const auto & message = dataGram->getMessage();
-							if (message.length() > 8) {
+							if (message.length() > 16) {
 								auto messageIntPtr = (int*)& message[0];
-								this->latestDataGram.valid = true;
-								contiguous &= messageIntPtr[0] - this->latestDataGram.frameIndex == 1;
+
+								bool valid = true;
+								for (int i = 0; i < message.size() / 16; i += 16) {
+									if (messageIntPtr[i + 2] != i) {
+										valid = false;
+										break;
+									}
+								}
+								this->latestDataGram.valid = valid;
+
+								contiguous &= messageIntPtr[1] - this->latestDataGram.packetIndex == 1;
 								this->latestDataGram.frameIndex = messageIntPtr[0];
+								this->latestDataGram.packetIndex = messageIntPtr[1];
 								this->latestDataGram.size = message.length();
 
 								sizeReceived += this->latestDataGram.size;
@@ -203,6 +213,9 @@ void ofApp::rebuildGui() {
 			}));
 			this->widgetsPanel->add(Widgets::LiveValue<int>::make("Last frame index", [this]() {
 				return this->latestDataGram.frameIndex;
+			}));
+			this->widgetsPanel->add(Widgets::LiveValue<int>::make("Last packet index", [this]() {
+				return this->latestDataGram.packetIndex;
 			}));
 			this->widgetsPanel->add(Widgets::LiveValueHistory::make("Success rate [%]", [this]() {
 				this->history.lock.lock();

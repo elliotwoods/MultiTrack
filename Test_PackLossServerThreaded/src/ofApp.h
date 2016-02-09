@@ -43,6 +43,7 @@ class ofApp : public ofBaseApp{
 			bool valid = false;
 			bool contiguous = false;
 			int size;
+			int packetIndex;
 			int frameIndex;
 		} latestDataGram;
 

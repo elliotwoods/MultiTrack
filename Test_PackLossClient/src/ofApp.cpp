@@ -5,7 +5,7 @@ using namespace ofxCvGui;
 //--------------------------------------------------------------
 void ofApp::setup(){
 	gui.init();
-	this->widgetsPanel = gui.addScroll();
+	this->widgetsPanel = gui.addWidgets();
 
 	{
 		this->target.ipAddress.set("IP Address", "127.0.0.1");
@@ -24,25 +24,29 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	auto frameIndex = ofGetFrameNum();
 	if (this->client) {
 		int iterations = this->payload.speed * 1e6 / (30 * this->payload.size);
+		auto dataGram = make_shared<ofxAsio::UDP::DataGram>();
+		dataGram->setEndPoint(ofxAsio::UDP::EndPoint(this->target.ipAddress, this->target.port));
+
 		for (int i = 0; i < iterations; i++) {
-			auto dataGram = make_shared<ofxAsio::UDP::DataGram>();
-			dataGram->setEndPoint(ofxAsio::UDP::EndPoint(this->target.ipAddress, this->target.port));
 			auto & message = dataGram->getMessage();
 
 			message.resize(this->payload.size);
 			auto messagePtr = &message[0];
 			auto messagePtrAsInteger = (int*)messagePtr;
 
-			for (int i = 0; i < this->payload.size / 8; i++) {
+			for (int i = 0; i < this->payload.size / 16; i++) {
 				*messagePtrAsInteger++ = frameIndex;
+				*messagePtrAsInteger++ = packetIndex;
 				*messagePtrAsInteger++ = i;
+				*messagePtrAsInteger++ = 0;
 			}
 
 			this->client->send(dataGram);
 
-			this->frameIndex++;
+			this->packetIndex++;
 			//std::this_thread::sleep_for(1us);
 		}
 	}
@@ -155,7 +159,11 @@ void ofApp::rebuildGui() {
 		}
 
 		this->widgetsPanel->add(Widgets::LiveValue<int>::make("Frame index", [this]() {
-			return this->frameIndex;
+			return ofGetFrameNum();
+		}));
+
+		this->widgetsPanel->add(Widgets::LiveValue<int>::make("Packet index", [this]() {
+			return this->packetIndex;
 		}));
 	}
 }
@@ -165,7 +173,7 @@ void ofApp::connect() {
 	this->disconnect();
 	this->client = make_shared<ofxAsio::UDP::Client>();
 	this->rebuildGui();
-	this->frameIndex = 0;
+	this->packetIndex = 0;
 }
 
 //--------------------------------------------------------------

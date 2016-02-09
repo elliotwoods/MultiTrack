@@ -41,5 +41,5 @@ class ofApp : public ofBaseApp{
 		} payload;
 		
 		shared_ptr<ofxAsio::UDP::Client> client;
-		int frameIndex = 0;
+		int packetIndex = 0;
 };
