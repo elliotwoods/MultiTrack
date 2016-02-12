@@ -50,6 +50,10 @@ void ofApp::setup(){
 								this->latestDataGram.packetIndex = messageIntPtr[1];
 								this->latestDataGram.size = message.size();
 
+								if (this->latestDataGram.packetIndex == 0) {
+									contiguous = true;
+								}
+
 								sizeReceived += this->latestDataGram.size;
 								this->history.lock.lock();
 								{
