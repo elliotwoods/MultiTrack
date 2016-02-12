@@ -45,14 +45,14 @@ void ofApp::setup(){
 								}
 								this->latestDataGram.valid = valid;
 
-								contiguous &= messageIntPtr[1] - this->latestDataGram.packetIndex == 1;
-								this->latestDataGram.frameIndex = messageIntPtr[0];
-								this->latestDataGram.packetIndex = messageIntPtr[1];
-								this->latestDataGram.size = message.size();
-
-								if (this->latestDataGram.packetIndex == 0) {
-									contiguous = true;
+								auto nextPacketIndex = messageIntPtr[1];
+								if(nextPacketIndex != 0) {
+									contiguous &= nextPacketIndex - this->latestDataGram.packetIndex == 1;
 								}
+
+								this->latestDataGram.frameIndex = messageIntPtr[0];
+								this->latestDataGram.packetIndex = nextPacketIndex;
+								this->latestDataGram.size = message.size();
 
 								sizeReceived += this->latestDataGram.size;
 								this->history.lock.lock();
