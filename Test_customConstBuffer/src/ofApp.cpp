@@ -1,55 +1,41 @@
+#include "pch.h"
 #include "ofApp.h"
 
 using namespace ofxCvGui;
 
-const float frameRate = 60;
+!!
+//Pretty sure this doesn't work
+
+#include "StreamBufferSequence.h"
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	ofSetWindowTitle("Client");
+	ofSetWindowShape(512, 1024);
+	ofSetWindowPosition(512, 256);
+
 	gui.init();
 	this->widgetsPanel = gui.addWidgets();
-
+	
 	{
-		this->target.ipAddress.set("IP Address", "127.0.0.1");
-		this->target.port.set("Port", 4444);
-	}
-
-	{
-		this->payload.size.set("Size", 1024 * 9);
-		this->payload.speed.set("Target speed [MB/s]", 500);
+		this->sender.ip.set("IP address", "127.0.0.1");
+		this->sender.port.set("Port", 4444);
 	}
 
 	this->rebuildGui();
-
-	ofSetFrameRate(frameRate);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	auto frameIndex = ofGetFrameNum();
 	if (this->client) {
-		int iterations = this->payload.speed * 1e6 / (frameRate * this->payload.size);
-		auto dataGram = make_shared<ofxAsio::UDP::DataGram>();
-		dataGram->setEndPoint(ofxAsio::UDP::EndPoint(this->target.ipAddress, this->target.port));
+		asio::io_service ioService;
+		asio::ip::udp::socket socket(ioService);
 
-		for (int i = 0; i < iterations; i++) {
-			auto & message = dataGram->getMessage();
+		StreamBuffer streamBuffer;
+		socket.send(streamBuffer);
 
-			message.resize(this->payload.size);
-			auto messageIntPtr = (int*)message.data();
-
-			for (int i = 0; i < this->payload.size / 16; i++) {
-				*messageIntPtr++ = frameIndex;
-				*messageIntPtr++ = packetIndex;
-				*messageIntPtr++ = i;
-				*messageIntPtr++ = 0;
-			}
-
-			this->client->send(dataGram);
-
-			this->packetIndex++;
-			//std::this_thread::sleep_for(1us);
-		}
+		string str;
+		asio::buffer(str);
 	}
 }
 
@@ -115,21 +101,14 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 void ofApp::rebuildGui() {
-	ofSetWindowTitle("Client");
-	ofSetWindowShape(512, 1024);
-	ofSetWindowPosition(256 + 512, 256);
-
 	this->widgetsPanel->clear();
 
 	this->widgetsPanel->add(Widgets::makeFps());
 
-	this->widgetsPanel->add(Widgets::Title::make("Target"));
+	this->widgetsPanel->add("Client");
 	{
-		auto ipAddressWidget = Widgets::EditableValue<string>::make(this->target.ipAddress);
-		auto portWidget = Widgets::EditableValue<int>::make(this->target.port);
-
-		this->widgetsPanel->add(ipAddressWidget);
-		this->widgetsPanel->add(portWidget);
+		this->widgetsPanel->add(this->sender.ip);
+		this->widgetsPanel->add(this->sender.port);
 
 		auto connectToggle = Widgets::Toggle::make("Connect", [this]() {
 			if (this->client) {
@@ -146,39 +125,34 @@ void ofApp::rebuildGui() {
 				this->disconnect();
 			}
 		});
-
 		this->widgetsPanel->add(connectToggle);
 	}
 
 	if (this->client) {
-		this->widgetsPanel->add(Widgets::Title::make("Payload"));
-		{
-			auto sizeWidget = Widgets::EditableValue<int>::make(this->payload.size);
-			auto speedWidget = Widgets::EditableValue<int>::make(this->payload.speed);
-			this->widgetsPanel->add(sizeWidget);
-			this->widgetsPanel->add(speedWidget);
-		}
 
-		this->widgetsPanel->add(Widgets::LiveValue<int>::make("Frame index", [this]() {
-			return ofGetFrameNum();
-		}));
-
-		this->widgetsPanel->add(Widgets::LiveValue<int>::make("Packet index", [this]() {
-			return this->packetIndex;
-		}));
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::connect() {
 	this->disconnect();
-	this->client = make_shared<ofxAsio::UDP::Client>();
+
+	this->clientMutex.lock();
+	{
+		this->client = make_shared<ofxAsio::UDP::Socket>();
+	}
+	this->clientMutex.unlock();
+
 	this->rebuildGui();
-	this->packetIndex = 0;
 }
 
 //--------------------------------------------------------------
 void ofApp::disconnect() {
-	this->client.reset();
+	this->clientMutex.lock();
+	{
+		this->client.reset();
+	}
+	this->clientMutex.unlock();
+
 	this->rebuildGui();
 }

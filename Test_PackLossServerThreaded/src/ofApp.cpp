@@ -33,12 +33,12 @@ void ofApp::setup(){
 						auto dataGram = this->server->receive(2e5);
 						if (dataGram) {
 							const auto & message = dataGram->getMessage();
-							if (message.length() > 16) {
-								auto messageIntPtr = (int*)& message[0];
+							if (message.size() > 16) {
+								auto messageIntPtr = (int*)message.data();
 
 								bool valid = true;
-								for (int i = 0; i < message.size() / 16; i += 16) {
-									if (messageIntPtr[i + 2] != i) {
+								for (int i = 0; i < message.size() / 16; i++) {
+									if (messageIntPtr[i * 4 + 2] != i) {
 										valid = false;
 										break;
 									}
@@ -48,7 +48,7 @@ void ofApp::setup(){
 								contiguous &= messageIntPtr[1] - this->latestDataGram.packetIndex == 1;
 								this->latestDataGram.frameIndex = messageIntPtr[0];
 								this->latestDataGram.packetIndex = messageIntPtr[1];
-								this->latestDataGram.size = message.length();
+								this->latestDataGram.size = message.size();
 
 								sizeReceived += this->latestDataGram.size;
 								this->history.lock.lock();
